@@ -1,0 +1,198 @@
+\documentclass{amsart}
+\usepackage{hyperref}
+\usepackage{fullpage}
+\usepackage{amsrefs}
+
+\usepackage[matrix,arrow]{xy}
+\usepackage{xypdf}
+\newdir{ >}{{}*!/-9pt/\dir{>}}
+
+\newcommand{\R}         {{\mathbb{R}}}
+\newcommand{\Z}         {{\mathbb{Z}}}
+\newcommand{\al}        {\alpha}
+\newcommand{\bt}        {\beta} 
+\newcommand{\ep}        {\epsilon}
+\newcommand{\om}        {\omega}
+\newcommand{\ov}[1]     {\overline{#1}}
+\newcommand{\sm}        {\setminus}
+\newcommand{\st}        {\;|\;}
+\newcommand{\tm}        {\times}
+\renewcommand{\:}{\colon}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{construction}[theorem]{Construction}
+
+\newtheorem{notation}{Notation}
+\renewcommand{\thenotation}{} % make the notation environment unnumbered
+
+%\numberwithin{equation}{subsection}
+
+\begin{document}
+\title{Combinatorial tangles}
+\author{N.~P.~Strickland}
+
+\maketitle 
+
+We want to define a category (or $2$-category) of combinatorial
+tangles.  The objects will be $t$-sets, as defined below.
+
+\begin{definition}
+ A \emph{$t$-set} is a finite, totally ordered set $A$ equipped with a
+ map $\ep_A\:A\to\{\pm 1\}$.  Given a $t$-set $A$, we put 
+ \begin{align*}
+  A_+ &= \{a\in A\st \ep(a)=1\} \\
+  A_- &= \{a\in A\st \ep(a)=-1\} \\
+  \|A\| &= \sum_i\ep_i = |A_+| - |A_-|. 
+ \end{align*}
+ We write $\ov{A}=\{\ov{a}\st a\in A\}$ ordered by $\ov{a}<\ov{b}$ iff
+ $b<a$, and with $\ep_{\ov{A}}(\ov{a})=-\ep_A(a)$.  Given another
+ $t$-set $B$, we define $A+B$ to be the set $A\amalg B$, ordered so
+ that $A$ precedes $B$, and with $\ep_{A\amalg B}$ given by $\ep_A$ on
+ $A$ and by $\ep_B$ on $B$.
+\end{definition}
+
+Next, we define a groupoid $T(A)$ as follows (whose objects are called
+\emph{combinatorial tangles} or just \emph{tangles}).  An object of
+$T(A)$ is a tuple $(X,P,\om,\al,\bt,\phi)$ where
+\begin{itemize}
+ \item $X$ is a finite set (whose elements are called
+  \emph{crossings}).
+ \item $P$ is a finite set (whose elements are called \emph{arcs}).  
+ \item $\om$ is a map from $P$ to $\{0,1\}$.  Arcs $u$ with $\om(u)=0$
+  are called \emph{closed}, and those with $\om(u)=1$ are called
+  \emph{open}.  We write $PC$ and $PO$ for the subsets of closed and
+  open arcs.
+ \item $\al$ is a map from $\Z/4\tm X$ to $PO$.
+ \item $\bt$ is a map from $A$ to $PO$.
+ \item $\phi$ is a map from $X$ to $\{\pm 1\}$.
+ \item $\al$ and $\bt$ together give a bijection
+  $A_-\amalg\{3,4\}\tm X\to PO$, with inverse $\phi_0$ say.
+ \item $\al$ and $\bt$ together give a bijection
+  $A_+\amalg\{0,1\}\tm X\to PO$, with inverse $\phi_1$ say.
+\end{itemize}
+A morphism from $(X,P,\om,\al,\bt,\phi)$ to
+$(X',P',\om',\al',\bt',\phi')$ is a pair of bijections $X\to X'$ and
+$P\to P'$ that are compatible with the other structure. 
+
+The interpretation is supposed to be as follows.  We identify $A$ with
+the set $\{(0,i,0)\in\R^3\st 1\leq i\leq |A|\}$ and we suppose that we
+have an oriented tangle in the half-space $x\leq 0$ with boundary $A$.
+We suppose that the orientation is arranged so that the arcs run from
+negative points (ie $(0,i,0)$ with $\ep_i=-1$) to positive points.  We
+suppose that the tangle projects nicely to give a tangle diagram in
+the $xy$ plane with crossing set $X$.  We let $PO$ denote the set of
+open arcs (homeomorphic to $[0,1]$) in this diagram, and we let $PC$
+denote the set of freely floating circles.  We then put 
+$P=PO\amalg PC$, and define $\om$ in the obvious way.  Next, given
+$x\in X$ we let $\al(0,x),\dotsc,\al(3,x)$ be the four arcs that touch
+$x$, numbered so that in anticlockwise order around $x$ we have the
+incoming end of $\al(0,x)$, the incoming end of $\al(1,x)$, the
+outgoing end of $\al(2,x)$ and the outgoing end of $\al(3,x)$.  Also,
+for $a\in A$ we let $\bt(a)$ denote the unique arc that touches $a$.
+It is reasonably clear that the axioms are satisfied.  We say that a
+combinatorial tangle is \emph{geometric} if it arises as above.
+
+Reidermeister moves for combinatorial tangles are as follows.
+Consider a tangle $T=(X,P,\om,\al,\bt,\phi)$.
+\begin{enumerate}
+ \item Suppose there is a crossing $x$ with $\al(2,x)=\al(3,x)$.  We
+  construct a new tangle $T'=(X',P',\om',\al',\bt',\phi')$ as follows:
+  \begin{itemize}
+   \item $X'=X\sm\{x\}$
+   \item $P'$ is the quotient of $P$ in which all the elements
+    $\al(i,x)$ are identified together to give a new element, which we
+    call $p$.
+   \item $\om'$ is the same as $\om$, except that $\om'(p)=0$ if
+    $\al(0,x)=\al(1,x)$, and $\om'(p)=1$ otherwise.
+   \item $\al'$ and $\bt'$ are obtained in the obvious way by
+    composing $\al$ and $\bt$ with the quotient map $P\to P'$.
+   \item $\phi'$ is the restriction of $\phi$.
+  \end{itemize}
+  The construction of $T'$ from $T$ is the \emph{first Reidermeister
+   move}. 
+ \item Suppose instead that we have crossings $x$ and $y$ with
+  $\al(2,x)=\al(1,y)$ and $\al(3,x)=\al(0,y)$ and
+  $\phi(x)+\phi(y)=0$.  In this case we construct $T'$ as follows:
+  \begin{itemize}
+   \item $X'=X\sm\{x,y\}$
+   \item $P'$ is the quotient of $P$ in which the elements
+    $\al(0,x),\al(2,x)=\al(1,y)$ and $\al(3,y)$ are identified
+    together to give $p$, and the elements
+    $\al(1,x),\al(3,x)=\al(0,y)$ and $\al(2,y)$ are identified
+    together to give $q$.
+   \item $\om'$ is the same as $\om$, except that $\om'(p)=0$ iff
+    $\al(3,y)=\al(0,x)$, and $\om'(q)=0$ iff $\al(2,y)=\al(1,x)$.
+   \item $\al'$ and $\bt'$ are obtained in the obvious way by
+    composing $\al$ and $\bt$ with the quotient map $P\to P'$.
+   \item $\phi'$ is the restriction of $\phi$.
+  \end{itemize}
+  The construction of $T'$ from $T$ is the \emph{second Reidermeister
+   move}. 
+ \item Finally, suppose we have $x,y,z\in X$ with 
+  \[ \al(3,x) = \al(1,y) \hspace{4em}
+     \al(2,x) = \al(1,z) \hspace{4em}
+     \al(2,y) = \al(0,z).
+  \]
+  We then put $T'=(X,P,\om,\al',\bt,\phi)$, where $\al'$ is the same
+  as $\al$ except 
+  \begin{align*}
+   \al'(0,x) &= \al(0,z) & 
+   \al'(1,x) &= \al(1,x) & 
+   \al'(2,x) &= \al(2,z) & 
+   \al'(3,x) &= \al(3,x) \\
+   \al'(0,y) &= \al(1,z) & 
+   \al'(1,y) &= \al(1,y) & 
+   \al'(2,y) &= \al(3,z) & 
+   \al'(3,y) &= \al(3,y) \\
+   \al'(0,z) &= \al(0,y) & 
+   \al'(1,z) &= \al(0,x) & 
+   \al'(2,z) &= \al(0,y) & 
+   \al'(3,z) &= \al(2,x).
+  \end{align*}
+  This construction is the \emph{third Reidemeister move}.
+\end{enumerate}
+
+Now suppose we have two sign sequences $A_0$ and $A_1$.  We define
+$T(A_0,A_1)$ to be $T(\ov{A_0}+A_1)$.  
+
+Now suppose we have a $t$-set $A$.  We put
+$1_A=(\emptyset,A,1,\emptyset,\bt,\emptyset)$, where 
+$\bt\:\ov{A}+A\to P=A$ is given by $\bt(\ov{a})=\bt(a)=a$.
+
+Now suppose we have 
+\begin{align*}
+ T_0 &= (X_0,P_0,\om_0,\al_0,\bt_0,\phi_0) \in T(A_0,A_1) = T(\ov{A_0}+A_1) \\
+ T_1 &= (X_1,P_1,\om_1,\al_1,\bt_1,\phi_1) \in T(A_1,A_2) = T(\ov{A_1}+A_2).
+\end{align*}
+We put $T_1\circ T_0=(X,P,\om,\al,\bt,\phi)$, where 
+\begin{itemize}
+ \item $X=X_0\amalg X_1$
+ \item $P$ is the largest quotient of $P_0\amalg P_1$ in which
+  $\bt_0(a_1)$ is identified with $\bt_1(\ov{a_1})$ for all $a_1\in A_1$.
+ \item $\al\:\Z/4\tm X\to P$ is obtained by combining $\al_0$ and
+  $\al_2$, and composing with the quotient map $P_0\amalg P_2\to P$.
+ \item $\bt\:\ov{A_0}\amalg A_2\to P$  is obtained by combining $\bt_0$ and
+  $\bt_2$, and composing with the quotient map $P_0\amalg P_2\to P$.
+ \item $\om$ is $1$ on the images of $\al$ and $\bt$, and $0$
+  elsewhere. 
+ \item $\phi$ is given by $\phi_i$ on $X_i$.
+\end{itemize}
+
+\begin{bibdiv}
+\begin{biblist}
+\bibselect{%
+../../BiBTeX/refs,%
+../../BiBTeX/myrefs%
+}
+\end{biblist}
+\end{bibdiv}
+
+\end{document}

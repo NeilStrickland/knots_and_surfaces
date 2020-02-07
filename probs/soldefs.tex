@@ -1,0 +1,34 @@
+\newcommand{\mk}{}
+\newcommand{\mks}[1]{}
+
+\makeatletter
+
+% An environment for a solution that is included inline.
+\newenvironment{SolutionInline}{{\noindent \bf Solution:}}{}
+
+% An environment that makes a solution completely invisible.
+\newenvironment{SolutionHidden}
+ {\@bsphack
+  \let\do\@makeother\dospecials\catcode`\^^M\active
+  \def\verbatim@processline{}%
+ \verbatim@start}%
+{\@esphack\par\vspace{2ex}}
+
+%\newenvironment{solution}{\SolutionInline}{\endSolutionInline}
+
+\ifx\SOLS\undefined
+\newcommand{\soltitle}{}
+\newenvironment{rubric}{}{}
+\newenvironment{solution}{\SolutionHidden}{\endSolutionHidden}
+\else
+\newcommand{\soltitle}{ --- Solutions}
+\newenvironment{rubric}{\SolutionHidden}{\endSolutionHidden}
+\newenvironment{solution}{\SolutionInline}{\endSolutionInline}
+\fi
+
+\makeatother
+
+\theoremstyle{definition}
+\newtheorem{exercise}{Exercise}
+%\numberwithin{exercise}{section}
+

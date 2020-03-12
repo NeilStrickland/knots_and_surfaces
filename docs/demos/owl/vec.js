@@ -25,8 +25,14 @@ vec.hat  = function(u) {
  return [u[0] / r, u[1] / r, u[2] / r];
 }
 
-vec.add = function(u,v) {
- return [u[0] + v[0], u[1] + v[1], u[2] + v[2]];
+vec.add = function() {
+ var u,i,a;
+ u = [0,0,0];
+ for (i = 0; i < arguments.length; i++) {
+  a = arguments[i];
+  u = [u[0] + a[0], u[1] + a[1], u[2] + a[2]];
+ }
+ return u;
 }
 
 vec.sub = function(u,v) {

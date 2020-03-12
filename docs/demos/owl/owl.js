@@ -349,6 +349,7 @@ owl3.thin_circle.embedding = function(t) {
 
 owl3.thin_sphere_arc = Object.create(owl3.thin_curve);
 
+owl3.thin_sphere_arc.c = [ 0,0,0];
 owl3.thin_sphere_arc.a = [-1,0,0];
 owl3.thin_sphere_arc.b = [ 1,0,0];
 owl3.thin_sphere_arc.u = [ 0,1,0];
@@ -356,6 +357,7 @@ owl3.thin_sphere_arc.v = [ 1,0,0];
 owl3.thin_sphere_arc.theta = Math.PI;
 
 owl3.thin_sphere_arc.set_ends = function(a,b) {
+ this.c = [0,0,0];
  this.a = vec.hat(a);
  this.b = vec.hat(b);
  this.u = vec.hat(vec.add(this.b,this.a));
@@ -365,8 +367,9 @@ owl3.thin_sphere_arc.set_ends = function(a,b) {
 
 owl3.thin_sphere_arc.embedding = function(t) {
  var phi = this.theta * (t - 0.5);
- return vec.add(vec.smul(Math.cos(phi),this.u),
-		vec.smul(Math.sin(phi),this.v));
+ return vec.add(this.c,
+        vec.add(vec.smul(Math.cos(phi),this.u),
+		vec.smul(Math.sin(phi),this.v)));
 };
 
 //////////////////////////////////////////////////////////////////////
@@ -676,6 +679,47 @@ owl3.klein.embedding = function(t,u) {
  var z = 0.25*cu*s2+0.4*cu;
  return [-x,z,y];
 }
+
+//////////////////////////////////////////////////////////////////////
+
+owl3.boys = Object.create(owl3.surface);
+
+owl3.boys.coeffs =
+ [[0.19841, 0, 0, 0.13226, 0.31036, 0, 0, 0.05120, 0.03890],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, -0.60213, -0.37851, 0, 0, -0.00688, 0.15039, 0, 0],
+  [0.30612, 0, 0, -0.25597, -0.26741, 0, 0, -0.06826, -0.05186],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, -0.13195, -0.06075, 0, 0, 0.00344, -0.07520, 0, 0],
+  [0.07282, 0, 0, 0.12371, -0.04294, 0, 0, 0.01706, 0.01297]];
+
+owl3.boys.embedding0 = function(t,u) {
+ var t0 = Math.PI * t / 2;
+ var u0 = Math.PI * u * 2; 
+ var Bt = [1,Math.sin(t0),Math.cos(t0),Math.sin(2*t0),Math.cos(2*t0),
+	   Math.sin(3*t0),Math.cos(3*t0),Math.sin(4*t0),Math.cos(4*t0)];
+ var Bu = [1,Math.sin(u0),Math.cos(u0),Math.sin(2*u0),Math.cos(2*u0),
+	   Math.sin(3*u0),Math.cos(3*u0),Math.sin(4*u0),Math.cos(4*u0)];
+
+ var v = 0;
+ for (var i = 0; i < 9; i++) {
+  for (var j = 0; j < 9; j++) {
+   v += this.coeffs[i][j] * Bt[i] * Bu[j];
+  }
+ }
+
+ return v;
+}
+
+owl3.boys.embedding = function(t,u) {
+ return [
+  this.embedding0(t,u),
+  this.embedding0(t,u+1/3),
+  this.embedding0(t,u+2/3)
+ ];
+}
+
 
 //////////////////////////////////////////////////////////////////////
 owl3.trefoil = Object.create(owl3.surface);

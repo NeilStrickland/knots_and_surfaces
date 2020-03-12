@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Surface of genus 2</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js"> 
+   MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+    tex2jax: {inlineMath: [["$","$"]]}
+   });
+  </script> 
+  <script src="https://preview.babylonjs.com/babylon.js"></script>
+  <script type="text/javascript" src="owl/vec.js"></script>
+  <script type="text/javascript" src="owl/owl.js"></script>
+  <script src="json/genus2.js"></script>
+  <style>
+   @import url(owl/owl.css);
+
+   html, body {
+       width: 100%;
+       margin: 0;
+       padding: 0;
+       background: white
+   }
+   
+   canvas {
+       touch-action: none;
+   }
+  </style>
+ </head>
+ <body>
+  <div style="text-align:center">
+   <div id="control_div" style="position:absolute; left:50px; top:50px;">
+    <div class="control" style="width: 150px;" id="index" onclick="location='index.html'">Index</div>
+   </div>
+   <h1>Surface of genus 2</h1>
+   <div style="width : 900px; margin: 0 auto; text-align:center">
+    <table>
+     <tr>
+      <td width="400">
+       <canvas id="main_canvas" width="400" height="400"></canvas>
+      </td>
+      <td width="400">
+       <img width="300" src="images/genus2_net.png"/>
+      </td>
+     </tr>
+    </table>
+    <div class="text" style="text-align: left">
+This surface has equation
+$$ 4\sqrt{2}(x^2-y^2)z = (r^2-1)((r^2+1)^2-6z^2) $$
+where $r=(x^2+y^2+z^2)^{1/2}$.  It has genus two.
+
+<br/><br/>
+
+We can build a surface like this by pasting the sides of an octagon,
+following the pattern shown above on the right.
+    </div>
+   </div>
+  </div> 
+  <script>
+  var demo = {};
+
+  demo.init = function() {
+   this.canvas = document.getElementById("main_canvas");
+   this.engine =
+     new BABYLON.Engine(this.canvas, true, { preserveDrawingBuffer: true, stencil: true });
+
+   this.scene = owl3.basic_scene(this.engine,this.canvas);
+   this.scene.camera.radius = 3;
+   
+   this.mesh = new BABYLON.Mesh("custom", this.scene);
+
+   this.object_data = object_data;
+   
+   var vertexData = new BABYLON.VertexData();
+   var pos = owl.flat(object_data.positions).map(function(x) { return 0.5 * x; });
+   
+   vertexData.positions = pos;
+   vertexData.normals   = owl.flat(object_data.normals);
+   vertexData.indices   = owl.flat(object_data.indices);
+   vertexData.applyToMesh(this.mesh);
+
+   owl3.set_colour(this.mesh,0.5,0.5,1);
+
+   var me = this;
+   
+   this.engine.runRenderLoop(function () {
+    if (me.scene) {
+     me.scene.render();
+    }
+   });
+
+   window.addEventListener("resize", function () {
+    me.engine.resize();
+   });
+  }
+
+  demo.init();
+  </script>
+ </body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <title>Sphere</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <script src="https://preview.babylonjs.com/babylon.js"></script>
+  <script src="https://preview.babylonjs.com/gui/babylon.gui.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js"> 
+   MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+    tex2jax: {inlineMath: [["$","$"]]}
+   });
+  </script> 
+  <script type="text/javascript" src="owl/vec.js"></script>
+  <script type="text/javascript" src="owl/owl.js"></script>
+  <script type="text/javascript" src="owl/pants.js"></script>
+
+  <style>
+   @import url(owl/owl.css);
+
+   html, body {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background: white;
+   }
+
+   canvas {
+       width: 300px;
+       height: 300px;
+       touch-action: none;
+   }
+
+  </style>
+ </head>
+ <body>
+  <div style="text-align:center">
+   <div id="control_div" style="position:absolute; left:50px; top:50px;">
+    <div class="control" style="width: 150px;" id="index" onclick="location='index.html'">Index</div>
+   </div>
+   <h1>Sphere</h1>
+   <div style="width : 900px; margin: 0 auto; text-align:center">
+    <table>
+     <tr>
+      <td width="400">
+       <canvas id="main_canvas" width="400" height="400"></canvas>
+      </td>
+      <td width="400">
+       <img width="300" src="images/sph_net.png"/>
+      </td>
+      <td width="400">
+       <canvas id="globe_canvas" width="400" height="400"></canvas>
+      </td>
+     </tr>
+    </table>
+    <div class="text" style="text-align: left">
+     The sphere is the simplest closed surface.  It is given implicitly by 
+     the equation 
+     $$ x^2 + y^2 + z^2 = 1, $$
+     and it can be parametrised as
+     $$ (x,y,z) = (\sin(\phi)\cos(\theta),\sin(\phi)\sin(\theta),\cos(\phi)). $$
+     The Euler characteristic is two, and the genus is zero.
+
+     <br/><br/>
+
+     We can build a sphere by pasting the sides of a square, as shown
+     in the middle diagram above.
+    </div>
+   </div>
+  </div>
+  
+  <script type="text/javascript">
+   var demo = Object.create(owl.demo);
+
+   demo.init = function() {
+    var me = this;
+    
+    this.find_ids(['globe_canvas']);
+
+    this.main_engine  = new BABYLON.Engine(this.main_canvas,true);
+    this.globe_engine = new BABYLON.Engine(this.globe_canvas,true);
+    this.main_scene   = owl3.basic_scene(this.main_engine , this.main_canvas); 
+    this.globe_scene  = owl3.basic_scene(this.globe_engine, this.globe_canvas);
+
+    this.sphere = Object.create(owl3.sphere);
+    this.sphere.make_mesh(this.main_scene);
+
+    this.earth = BABYLON.MeshBuilder.CreateSphere("Sphere", {diameter : 6}, this.globe_scene);
+    this.earth.position = new BABYLON.Vector3(0, 0, 0); // Using a vector
+    this.earth.rotation.x = Math.PI;
+    var mat = new BABYLON.StandardMaterial(null, this.globe_scene);
+    mat.diffuseTexture = new BABYLON.Texture('images/earth.jpg', this.globe_scene);
+    mat.specularColor = BABYLON.Color3.Black();
+		
+    this.earth.material = mat;
+
+    this.main_engine.runRenderLoop(function() {
+     if (me.main_scene) {
+      me.main_scene.render();
+     }
+    })
+
+    this.globe_engine.runRenderLoop(function() {
+     if (me.globe_scene) {
+      me.globe_scene.render();
+     }
+    })
+
+    window.addEventListener("resize", function () {
+     me.main_engine.resize();
+     me.globe_engine.resize();
+    });
+
+   }
+
+   demo.init();
+  </script>
+ </body>
+</html>

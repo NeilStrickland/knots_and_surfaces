@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <title>Not a surface</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <script src="https://preview.babylonjs.com/babylon.js"></script>
+  <script src="https://preview.babylonjs.com/gui/babylon.gui.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js"> 
+   MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+    tex2jax: {inlineMath: [["$","$"]]}
+   });
+  </script> 
+  <script type="text/javascript" src="owl/vec.js"></script>
+  <script type="text/javascript" src="owl/owl.js"></script>
+  <script type="text/javascript" src="owl/pants.js"></script>
+
+  <style>
+   @import url(owl/owl.css);
+
+   html, body {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background: white;
+   }
+
+   canvas {
+       touch-action: none;
+   }
+
+  </style>
+ </head>
+ <body>
+  <div style="text-align:center">
+   <div id="control_div" style="position:absolute; left:50px; top:50px;">
+    <div class="control" style="width: 150px;" id="index" onclick="location='index.html'">Index</div>
+   </div>
+   <h1>Not a surface</h1>
+   <div style="width : 900px; margin: 0 auto; text-align:center">
+    <canvas id="main_canvas" width="400" height="400"></canvas>
+    <br/>
+    <div class="text" style="text-align: left">
+     This does not count as a surface, according to our definition.
+     In a surface, every point must have a neighbourhood that is 
+     homeomorphic to a disc.  In this picture, points on the 
+     intersection of the two planes do not have such a neighbourhood.
+    </div>
+   </div>
+  </div>
+  
+  <script type="text/javascript">
+   var demo = Object.create(owl.demo);
+
+   demo.init = function() {
+    var me = this;
+    
+    this.find_ids();
+
+    this.engine  = new BABYLON.Engine(this.main_canvas,true);
+    this.scene   = owl3.basic_scene(this.engine , this.main_canvas); 
+    this.scene.camera.radius = 5;
+     
+    var K = {};
+    K.embedding = [
+     [ 0, 0,-1],[ 1, 0,-1],[ 0, 1,-1],[-1, 0,-1],[ 0,-1,-1],
+     [ 0, 0, 1],[ 1, 0, 1],[ 0, 1, 1],[-1, 0, 1],[ 0,-1, 1]
+    ];
+
+    K.faces = [
+     [0,1,6],[0,6,5],[0,2,7],[0,7,5],
+     [0,3,8],[0,8,5],[0,4,9],[0,9,5]
+    ];
+
+    K.grid = new BABYLON.VertexData();
+    K.grid.positions = owl.flat(K.embedding);
+    K.grid.indices = owl.flat(K.faces);
+    K.mesh = new BABYLON.Mesh(null,this.scene);
+    K.grid.applyToMesh(K.mesh);
+    owl3.set_colour(K.mesh,0.5,0.5,1);
+
+    var L = Object.create(owl3.thick_line);
+    L.a = [0,0,-1];
+    L.b = [0,0, 1];
+    L.make_mesh(this.scene);
+    owl3.set_colour(L.mesh,1,0,0);
+    
+    this.engine.runRenderLoop(function() {
+     if (me.scene) {
+      me.scene.render();
+     }
+    })
+
+    window.addEventListener("resize", function () {
+     me.engine.resize();
+    });
+   }
+
+   demo.init();
+  </script>
+ </body>
+</html>

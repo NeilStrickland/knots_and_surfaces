@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <title>Surfaces</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <script src="https://preview.babylonjs.com/babylon.js"></script>
+  <script src="https://preview.babylonjs.com/gui/babylon.gui.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js"> 
+   MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+    tex2jax: {inlineMath: [["$","$"]]}
+   });
+  </script> 
+  <script type="text/javascript" src="owl/vec.js"></script>
+  <script type="text/javascript" src="owl/owl.js"></script>
+  <script type="text/javascript" src="owl/pants.js"></script>
+
+  <style>
+   @import url(owl/owl.css);
+
+   html, body {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background: white;
+   }
+
+   canvas {
+       width: 300px;
+       height: 300px;
+       touch-action: none;
+   }
+
+   table#A {
+    position: absolute;
+    left: 50px;
+    top: 60px;
+   }
+   
+   table#B {
+    position: absolute;
+    left: 680px;
+    top: 60px;
+   }
+
+   span.video_link {
+    position:absolute;
+    right: 5px;
+   }
+
+   canvas {
+       width: 200;
+       height: 150;
+       touch-action: none;
+   }
+
+   div.solid {
+       text-align: center;
+       display : inline-block;
+   }
+   
+  </style>
+ </head>
+ <body>
+  <div id="frame">
+   <div  style="margin-left:50px;">
+    <h1>Interactive pages for Knots and Surfaces</h1>
+    <table id="A" class="edged">
+    </table>
+    <table id="B" class="edged">
+    </table>
+   </div>
+  </div>
+  <script type="text/javascript">
+   
+   var demos = [
+    ['The sphere','sphere'],
+    ['The icosahedron','icos'],
+    ['The torus','torus'],
+    ['A surface of genus 2','genus2'],
+    ['A cube with holes','holeycube'],
+    ['The Möbius strip','mobius'],
+    ['Various orientable surfaces','pants'],
+    ['Not a surface','nonmanifold']
+   ];
+
+   var n = demos.length;
+   var m = Math.ceil(n / 2);
+
+   var table_A = document.getElementById('A');
+   var table_B = document.getElementById('B');
+   
+   for (i = 0 ; i < n; i++) {
+    var tr = document.createElement('tr');
+    var td = document.createElement('td');
+    var a =  document.createElement('a');
+    td.style.width = '450px';
+    td.appendChild(a);
+    tr.appendChild(td);
+    a.href = demos[i][1] + '.html';
+    a.innerHTML = demos[i][0];
+    if (i < m) {
+     table_A.appendChild(tr);
+    } else {
+     table_B.appendChild(tr);
+    }
+   }
+   
+  </script>
+ </body>
+</html>

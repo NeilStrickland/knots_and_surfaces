@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <title>Icosahedron</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <script src="https://preview.babylonjs.com/babylon.js"></script>
+  <script src="https://preview.babylonjs.com/gui/babylon.gui.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js"> 
+   MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+    tex2jax: {inlineMath: [["$","$"]]}
+   });
+  </script> 
+  <script type="text/javascript" src="owl/vec.js"></script>
+  <script type="text/javascript" src="owl/owl.js"></script>
+  <script type="text/javascript" src="owl/pants.js"></script>
+
+  <style>
+   @import url(owl/owl.css);
+
+   html, body {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background: white;
+   }
+
+   canvas {
+       width: 300px;
+       height: 300px;
+       touch-action: none;
+   }
+
+  </style>
+ </head>
+ <body>
+  <div style="text-align:center">
+   <div id="control_div" style="position:absolute; left:50px; top:50px;">
+    <div class="control" style="width: 150px;" id="index" onclick="location='index.html'">Index</div>
+   </div>
+   <h1>Icosahedron</h1>
+   <div style="width : 900px; margin: 0 auto; text-align:center">
+    <table>
+     <tr>
+      <td width="400">
+       <canvas id="main_canvas" width="400" height="400"></canvas>
+      </td>
+      <td width="400">
+       <img width="400" src="images/icos.jpg"/>
+      </td>
+     </tr>
+    </table>
+    <div class="text" style="text-align: left">
+     To avoid various technical problems, we will generally consider 
+     surfaces which are simplicial complexes, which means that they
+     are composed of a finite number of flat triangles that fit nicely
+     together.  Thus, instead of the round sphere, we will consider 
+     something like this icosahedron.
+    </div>
+   </div>
+  </div>
+  
+  <script type="text/javascript">
+   var demo = Object.create(owl.demo);
+
+   demo.init = function() {
+    var me = this;
+    
+    this.find_ids();
+
+    this.engine  = new BABYLON.Engine(this.main_canvas,true);
+    this.scene   = owl3.basic_scene(this.engine , this.main_canvas); 
+
+    this.icos = BABYLON.MeshBuilder.CreatePolyhedron(null, {type: 3, size: 3}, this.scene);
+    owl3.set_colour(this.icos,0.5,0.5,1);
+    
+    this.engine.runRenderLoop(function() {
+     if (me.scene) {
+      me.scene.render();
+     }
+    })
+
+    window.addEventListener("resize", function () {
+     me.engine.resize();
+    });
+   }
+
+   demo.init();
+  </script>
+ </body>
+</html>

@@ -1,0 +1,13 @@
+*.aux
+*.bbl
+*.blg
+*.idx
+*.ilg
+*.ind
+*.log
+*.nav
+*.out
+*.refs
+*.snm
+*.toc
+old
